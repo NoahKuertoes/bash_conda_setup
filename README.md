@@ -1,2 +1,5 @@
-# bash_conda_setup
-This repository contains the necessary scripts to install conda through the shell, ensuring proper environment setup
+# Setting up a current version of *Conda* through the shell
+
+---
+
+**_WORKFLOW:_**
