@@ -1,4 +1,4 @@
-# __Setting up a current version of *Conda* through the shell__
+# __Setting up a current version of *Anaconda* through the shell__
 
 Disclaimer:
 
