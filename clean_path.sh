@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #SCRIPT INITIATION
 echo "----------------------------"
 echo "Checking directories in '\$PATH' variable:"
