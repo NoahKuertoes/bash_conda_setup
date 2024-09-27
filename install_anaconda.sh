@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #DEBUGGING Variables:
-RM_INST=1 #Set to one if you want to toggle off the installer removal
+RM_INST=1 #Set to "=1" if you want to toggle off the installer removal
 
 # Setup ##
 # 0.) Define the download webpage from Anaconda
