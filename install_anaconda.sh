@@ -56,7 +56,7 @@ case "$INSTALL_OPTION" in
             INSTDIR="C:/Anaconda3"
             INSTMODE="AllUsers"
         else
-            INSTDIR="/opt/anaconda3"
+            INSTDIR="/opt/Anaconda3"
         fi
         echo "Anaconda will be installed to the base directory: $INSTDIR";;
     3) 
