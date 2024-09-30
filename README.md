@@ -59,3 +59,10 @@ _Bug reports:_
 | 20240930 | in `install_anaconda.sh` $PATH export via `powershell.exe` adds *$HOME/Anaconda* to the $PATH | no fix yet but calling works | 
 
 ---
+
+_Related forum posts_:
+
+- [github #8428](https://github.com/conda/conda/issues/8428)
+
+
+
