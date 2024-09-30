@@ -41,7 +41,7 @@ Enter your choice (1, 2, or 3):
   - *Linux:* `bash "$INSTALLER" -b -p "$INSTDIR"`
   - *Mac:* `sudo installer -pkg "$INSTALLER" -target /`
 - Modify `PATH` variable:
-  - *Windows:* `powershell.exe -Command "[System.Environment]::SetEnvironmentVariable('PATH', \$env:PATH + ';$INSTDIR\\Scripts;$INSTDIR\\', 'User')"`
+  - *Windows:* `powershell.exe -Command "[System.Environment]::SetEnvironmentVariable('PATH', [System.Environment]::GetEnvironmentVariable('PATH', 'User') + ';$INSTDIR\\Scripts;$INSTDIR\\', 'User')"`
   - *Linux/Mac:* `echo "export PATH=\"$INSTDIR/bin:\$PATH\"" >> ~/.bashrc`
 - Remove installer file
 
