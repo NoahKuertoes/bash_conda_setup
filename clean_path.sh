@@ -43,7 +43,7 @@ done
 if [ -z "$REMOVE" ]; then
   echo "----------------------------"
   echo -e "PATH not updated\nAll directories present."
-  exit 0
+  exit 1
 fi
 
 echo "----------------------------"
