@@ -41,6 +41,9 @@ echo "2. Install to base directory (requires admin privileges)"
 echo "3. Cancel installation"
 read -p "Enter your choice (1, 2, or 3): " INSTALL_OPTION
 
+
+
+
 # Handle the user input
 case "$INSTALL_OPTION" in
     1) 
