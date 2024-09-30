@@ -17,7 +17,7 @@ Disclaimer:
 
 ```
 PATH not updated
- All directories present.
+All directories present.
 ```
 
 ---
