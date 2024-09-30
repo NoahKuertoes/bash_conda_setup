@@ -53,7 +53,8 @@ Enter your choice (1, 2, or 3):
 
 _Bug reports:_
 
-| Date | Problem | Fix |
+|Date|Problem|Fix|
+|---|---|---|
 | 20240927 | `install_anaconda.sh` fails to create the *$HOME/Anaconda* directory but defaults to lowercase | changing hardcode to lowercase *anaconda* |
 | 20240930 | in `install_anaconda.sh` $PATH export via `powershell.exe` adds *$HOME/Anaconda* to the $PATH | no fix yet but calling works | 
 
