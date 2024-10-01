@@ -138,7 +138,7 @@ EOL
 
 echo ">> profile.ps1 has been written to $PS1_PATH with Conda initialization."
 
-
+echo "----------------------------"
 # 4. Add profile.ps1 to PowerShell autostart by modifying the system PATH
 # Add the WindowsPowerShell folder to the PATH if not already present
 POWERSHELL_PATH="$INSTDIR_WINDOWS\\Documents\\WindowsPowerShell"
