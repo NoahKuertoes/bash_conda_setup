@@ -56,6 +56,12 @@ Enter your choice (1, 2, or 3):
 
 3. The Custom conda initiation
 
+Files to edit:
+- bashrc
+- profile.ps1
+- condahook.ps1
+- conda.sh
+
 ---
 
 _Bug reports:_
@@ -69,7 +75,8 @@ _Bug reports:_
 
 _Related forum posts_:
 
-- [github #8428](https://github.com/conda/conda/issues/8428)
+- [Conda environment activation not working in PowerShell #8428](https://github.com/conda/conda/issues/8428)
+- [Why are conda and mamba not fully activating my environment on Cheaha?](https://ask.cyberinfrastructure.org/t/why-are-conda-and-mamba-not-fully-activating-my-environment-on-cheaha/2649)
 
 
 
