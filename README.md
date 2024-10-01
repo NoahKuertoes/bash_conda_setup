@@ -35,10 +35,17 @@ Enter your choice (1, 2, or 3):
 
 - Check operating system
 - Ask for install `[current user | base directory]`
+ - *Windows:* will call `check_ascii.sh` to check for **ASCII** conformity of the username.
+ - If the username is not ASCII-conform will call `get_shortname.ps1` to retrieve the associated **Short Username** through the *Windows api*
+ - If that is the case end the installation with the statement:
+  ```
+   ATTENTION!       </c/Users/<username>> contains non-ASCII conform characters:
+                    conda init in will likely fail to initiate <profile.ps1> correctly
+   ADVICE           run <conda_init_custom.sh>
+  ```
 - Fetch and - if necessary - download the proper installer
 - Install Anaconda:
   - *Windows:* `powershell.exe -Command "& {Start-Process -FilePath './$INSTALLER' -ArgumentList '/S', '/InstallationType=$INSTMODE', '/RegisterPython=0', '/AddToPath=0', '/D=$INSTDIR' -NoNewWindow -Wait}"`
-  - *Linux:* `bash "$INSTALLER" -b -p "$INSTDIR"`
   - *Mac:* `sudo installer -pkg "$INSTALLER" -target /`
 - Modify `PATH` variable:
   - *Windows:* `powershell.exe -Command "[System.Environment]::SetEnvironmentVariable('PATH', [System.Environment]::GetEnvironmentVariable('PATH', 'User') + ';$INSTDIR\\Scripts;$INSTDIR\\', 'User')"`
@@ -47,7 +54,7 @@ Enter your choice (1, 2, or 3):
 
 ---
 
- 3. 
+3. The Custom conda initiation
 
 ---
 
