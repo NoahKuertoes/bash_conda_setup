@@ -15,33 +15,35 @@ Disclaimer:
 
  1. After cloning the repo via `git clone https://github.com/NoahKuertoes/bash_conda_setup.git`, it is advisable to first run `source clean_path.sh`. This will check your path directory for non-existing directories in your path variable, which can occur from previous faulty installations. If no missing directories are detected nothing will happen:
 
-```
-PATH not updated
-All directories present.
-```
+ ```
+ PATH not updated
+ All directories present.
+ ```
 
 ---
  
- 2. The installer will be fetched from `"https://repo.anaconda.com/archive/"`. Depending on the operating system (OS) the topmost `.sh`, `.pkg` or `.exe` will be fetched. The installation can   be performed in the current user directory or the base directory
- `install_anaconda.sh` will do the following:
+ 2. The installer will be fetched from `"https://repo.anaconda.com/archive/"`. Depending on the operating system (OS) the topmost `.sh`, `.pkg` or `.exe` will be fetched. The installation can   be performed in the current user directory or the base directory.
+
+`install_anaconda.sh` will do the following:
 
 - Check operating system
 - Ask for install `[current user | base directory]`
+
   ```
-Where would you like to install Anaconda?
-1. Install for the current user (default)
-2. Install to base directory (requires admin privileges)
-3. Cancel installation
-Enter your choice (1, 2, or 3):
-```
+  Where would you like to install Anaconda?
+  1. Install for the current user (default)
+  2. Install to base directory (requires admin privileges)
+  3. Cancel installation
+  Enter your choice (1, 2, or 3):
+  ```
  - *Windows:* will call `check_ascii.sh` to check for **ASCII** conformity of the username.
  - If the username is not ASCII-conform will call `get_shortname.ps1` to retrieve the associated **Short Username** through the *Windows api*
  - If that is the case end the installation with the statement:
-  ```
+   ```
    ATTENTION!       </c/Users/<username>> contains non-ASCII conform characters:
                     conda init in will likely fail to initiate <profile.ps1> correctly
    ADVICE           run <conda_init_custom.sh>
-  ```
+   ```
 - Fetch and - if necessary - download the proper installer
 - Install Anaconda:
   - *Windows:* `powershell.exe -Command "& {Start-Process -FilePath './$INSTALLER' -ArgumentList '/S', '/InstallationType=$INSTMODE', '/RegisterPython=0', '/AddToPath=0', '/D=$INSTDIR' -NoNewWindow -Wait}"`
