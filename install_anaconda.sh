@@ -2,6 +2,7 @@
 
 #DEBUGGING Variables:
 RM_INST=1 #Set to "=1" if you want to toggle off the installer removal
+DEBUG_SCRIPT=0 #set to "=1" to prevent installer from running
 
 # Setup ##
 # 0.) Define the download webpage from anaconda
@@ -40,7 +41,7 @@ echo "1. Install for the current user (default)"
 echo "2. Install to base directory (requires admin privileges)"
 echo "3. Cancel installation"
 read -p "Enter your choice (1, 2, or 3): " INSTALL_OPTION
-
+echo "----------------------------"
 
 
 
@@ -48,11 +49,29 @@ read -p "Enter your choice (1, 2, or 3): " INSTALL_OPTION
 case "$INSTALL_OPTION" in
     1) 
         if [[ "$OS" == "Windows" ]]; then
-            INSTDIR="$HOME/anaconda3"
-            INSTMODE="JustMe"
+            # In Windows ASCII-incform usernames can become problematic for the powershell
+            output=$(source check_ascii.sh "$(basename "$HOME")")
+
+            case "$output" in
+                "CONFIRM")
+                    INSTDIR="$HOME/anaconda3"
+                    ;;
+                "OTHER")
+                    echo -e "ATTENTION! \t $HOME contains non-ASCII conform characters:"
+                    echo -e "\t\tinstalling in shortname directory"
+                    INSTDIR=$(powershell.exe -File ./get_shortname.ps1 "$HOME")/anaconda3
+                    MOD_CONDA=1
+                    ;;
+                *)
+                    echo "Unrecognized output: $output"
+                    exit 0
+                    ;;
+            esac
+            
         else
             INSTDIR="$HOME/anaconda3"
         fi
+        INSTMODE="JustMe"
         echo "anaconda will be installed for the current user in: $INSTDIR";;
     2) 
         if [[ "$OS" == "Windows" ]]; then
@@ -86,47 +105,64 @@ else
 fi
 
 # 6.) Install anaconda
-echo "----------------------------"
-if [[ "$OS" == "Windows" ]]; then
-    # Use PowerShell for silent installation on Windows
-    echo "Running the anaconda installer silently using PowerShell..."
-    powershell.exe -Command "& {Start-Process -FilePath './$INSTALLER' -ArgumentList '/S', '/InstallationType=$INSTMODE', '/RegisterPython=0', '/AddToPath=0', '/D=$INSTDIR' -NoNewWindow -Wait}"
-    
-    # Check if installation was successful
-    if [ -d "$INSTDIR" ]; then
-        echo "anaconda installed successfully at $INSTDIR."
+if [[ $DEBUG_SCRIPT != 1 ]]; then
+    echo "----------------------------"
+    if [[ "$OS" == "Windows" ]]; then
+         Format $INSTDIR to Windows-style backslashes
+        INSTDIR_WINDOWS=$(echo "$INSTDIR" | sed 's|/|\\|g')
+        # Use PowerShell for silent installation on Windows
+        echo "Running the anaconda installer silently using PowerShell..."
+        powershell.exe -Command "& {Start-Process -FilePath './$INSTALLER' -ArgumentList '/S', '/InstallationType=$INSTMODE', '/RegisterPython=0', '/AddToPath=0', '/D=$INSTDIR' -NoNewWindow -Wait}"
+        powershell.exe -Command "Write-Output 'Updated installation direcotry: $INSTDIR'"
+        # Check if installation was successful
+        if [ -d "$INSTDIR" ]; then
+            echo "----------------------------"
+            echo "Anaconda installed successfully at $INSTDIR_WINDOWS."
+            # Modify the PATH environment variable in Windows (User level)
+            echo "Adding Anaconda to the Windows PATH using PowerShell..."
+            powershell.exe -Command "
+                \$currentPath = [System.Environment]::GetEnvironmentVariable('PATH', 'User');
+                \$newPath = \$currentPath + ';$INSTDIR_WINDOWS\\Scripts;$INSTDIR_WINDOWS\\';
+                Write-Host 'Updated PATH:';
+                \$newPath -split ';' | ForEach-Object { Write-Host '>>>' \$_ }
+                [System.Environment]::SetEnvironmentVariable('PATH', \$newPath, 'User')
+            "
+            echo "PATH updated successfully."
+
+        else
+            echo "Installation failed. Exiting."
+            exit 0
+        fi
+    else
+        # For macOS and Linux, use the downloaded script or package
+        echo "Running the anaconda installer..."
+        if [[ "$OS" == "macOS" ]]; then
+            sudo installer -pkg "$INSTALLER" -target /
+        elif [[ "$OS" == "Linux" ]]; then
+            bash "$INSTALLER" -b -p "$INSTDIR"
+        fi
         
-        # Modify the PATH environment variable in Windows (User level)
-        echo "Adding anaconda to the Windows PATH using PowerShell..."
-        #powershell.exe -Command "[System.Environment]::SetEnvironmentVariable('PATH', \$env:PATH + ';$INSTDIR\\Scripts;$INSTDIR\\', 'User')"
-        powershell.exe -Command "[System.Environment]::SetEnvironmentVariable('PATH', [System.Environment]::GetEnvironmentVariable('PATH', 'User') + ';$INSTDIR\\Scripts;$INSTDIR\\', 'User')"
-        echo "PATH updated successfully."
+        # Check if installation was successful
+        if [ -d "$INSTDIR" ]; then
+            echo "anaconda installed successfully at $INSTDIR."
+        else
+            echo "Installation failed. Exiting."
+            exit 1
+        fi
 
-    else
-        echo "Installation failed. Exiting."
-        exit 1
+        # Add anaconda to PATH in Git Bash by appending to ~/.bashrc for Linux/macOS
+        echo "Adding anaconda to PATH in .bashrc..."
+        echo "export PATH=\"$INSTDIR/bin:\$PATH\"" >> ~/.bashrc
+        source ~/.bashrc
     fi
-else
-    # For macOS and Linux, use the downloaded script or package
-    echo "Running the anaconda installer..."
-    if [[ "$OS" == "macOS" ]]; then
-        sudo installer -pkg "$INSTALLER" -target /
-    elif [[ "$OS" == "Linux" ]]; then
-        bash "$INSTALLER" -b -p "$INSTDIR"
-    fi
-    
-    # Check if installation was successful
-    if [ -d "$INSTDIR" ]; then
-        echo "anaconda installed successfully at $INSTDIR."
-    else
-        echo "Installation failed. Exiting."
-        exit 1
-    fi
+fi
 
-    # Add anaconda to PATH in Git Bash by appending to ~/.bashrc for Linux/macOS
-    echo "Adding anaconda to PATH in .bashrc..."
-    echo "export PATH=\"$INSTDIR/bin:\$PATH\"" >> ~/.bashrc
-    source ~/.bashrc
+if [[ $MOD_CONDA == 1 ]]; then
+    echo "----------------------------"
+    echo -e "ATTENTION! \t <$HOME> contains non-ASCII conform characters:"
+    echo -e " \t\t conda init in will likely fail to initiate <profile.ps1> correctly" 
+    echo -e "ADVICE \t\t run <conda_init_custom.sh>" 
+
 fi
 
 # Clean up the installer file after installation

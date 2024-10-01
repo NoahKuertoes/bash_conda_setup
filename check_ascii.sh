@@ -8,10 +8,10 @@ fi
 
 # Check if the string contains only ASCII characters (0-127) and has no spaces
 if [[ $(echo "$1" | tr -d '[\x00-\x7F]') == "" && ! "$1" =~ [[:space:]] ]]; then
-  echo -e "CONFIRM: \tASCII conform \tno spaces:"
+  #echo -e "CONFIRM: \tASCII conform \tno spaces:"
   echo "ASCII"
 else
-  echo -e "ATTENTION: \tNOT ASCII conform \tOR contains space."
+  #echo -e "ATTENTION: \tNOT ASCII conform \tOR contains space."
   echo "OTHER"
 fi
 
