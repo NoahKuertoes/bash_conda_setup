@@ -1,6 +1,18 @@
 # __Setting up a current version of *Anaconda* through the shell__
 
-Disclaimer:
+**Disclaimer: This repository is still under construction.**
+
+|File|Describtion|Status|
+|---|---|---|
+|`bash_conda_setup.sh`|setup final pipeline file to automatically setup conda|**open**|
+|`uninstall_conda.sh`|clean up previous conda version|done|
+|`clean_path.sh`|clean up `$PATH` variable and optionally delete non-existent directories from it|done|
+|`install_anaconda.sh`|download the OS specific installer <br> ask for user input regarding install location <br>install anaconda silently <br> for *Windows* check username [ASCII](https://en.wikipedia.org/wiki/ASCII) conformity and install in short-username if not|done|
+|`check_ascii.sh`|check any string for [ASCII](https://en.wikipedia.org/wiki/ASCII)  conformity|done|
+|`get_shortname.ps1`|for *Windows* get user shortname from file metadata|done|
+|`custom_conda_init.sh`|overwrite files for shell initation with directory redirection |**pending**|
+
+
 
 ---
 
@@ -71,6 +83,7 @@ _Bug reports:_
 |---|---|---|
 | 20240927 | `install_anaconda.sh` fails to create the *$HOME/Anaconda* directory but defaults to lowercase | changing hardcode to lowercase *anaconda* |
 | 20240930 | in `install_anaconda.sh` $PATH export via `powershell.exe` adds *$HOME/Anaconda* to the $PATH | no fix yet but calling works | 
+|20241002| in `uninstall_anaconda.sh` sometimes leaves behind ghost files in windows programm manager| no fix yet and inconsistent appearance but doesn't interfere with the rest of the pipeline|
 
 ---
 
