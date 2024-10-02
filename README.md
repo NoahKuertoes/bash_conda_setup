@@ -17,7 +17,7 @@
 ---
 
 - **WHY:** Setting up the conda environment through shell can be used to circument problem's occuring with a manual instatllation. Especially special character's in usernames (e.g.: "ü", "ö", "ä", "é", "ê",...) can cause encoding problems when interpreted by `conda init`and `conda activate`. Although it is generally advisable to avoid these characters in usernames, this pipeline provides a suitable workaround in case you don't want to or can't change usernames.
-- **OS:** Currently this pipeline is written for a *git bash* shell running in *Windows*
+- **OS:** Currently this pipeline is written for a *git bash* shell (originally running in *Windows*)
 - **HOW:** t.b.d
 
 
